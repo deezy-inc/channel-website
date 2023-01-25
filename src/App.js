@@ -22,7 +22,7 @@ import DeezyLogo from './assets/images/Logo-No-Text.svg';
 const axios = require('axios').default;
 const validator = require('validator')
 
-const TESTNET = true
+const TESTNET = false
 const API_BASE_URL = `https://api${TESTNET ? '-testnet' : ''}.deezy.io`
 
 const MIN_CHANNEL_SIZE_SATS = TESTNET ? 50000 : 400000
