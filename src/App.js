@@ -266,7 +266,7 @@ const App = () => {
         {
           node_connection_info: nodeConnectionInfo,
           remote_balance: channelParams.channelRemoteAmountSats,
-          on_chain_sats_per_vbyte: channelParams.feeOnChainSatsPerVbyte
+          on_chain_fee_rate: channelParams.feeOnChainSatsPerVbyte
         })
     } catch (err) {
       setShowAwaitingInvoiceModal(false)
@@ -301,6 +301,7 @@ const App = () => {
     return (
       <>
         <b>Channel Size:</b> {channelParams.channelRemoteAmountSats.toLocaleString('en-US')} sats<br /><br />
+        <b>On-Chain Fee Rate:</b> {channelParams.feeOnChainSatsPerVbyte} sat/vbyte<br /><br />
         <b>Total Fee:</b> {channelParams.totalFeeSats.toLocaleString('en-US')} sats ({channelParams.feeNetPpm.toLocaleString('en-US')} ppm)<br /><br />
         <b>Node Info:</b> {nodeConnectionInfo}<br /><br />
         <b>Details:</b> The channel will have zero routing fees and will remain open for at least one month.
