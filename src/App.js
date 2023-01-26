@@ -180,7 +180,7 @@ const App = () => {
   }
 
   function handleChannelSizeChange(evt) {
-    const newChannelRemoteAmountSats = parseInt(channelParams.useSatsForDisplay ? evt.target.value: evt.target.value * SATS_PER_BTC)
+    const newChannelRemoteAmountSats = parseInt(channelParams.useSatsForDisplay ? evt.target.value: Math.round(evt.target.value * SATS_PER_BTC))
     // console.log(newChannelRemoteAmountSats)
     const newFeeOnChainSatsPerByte = channelParams.feeOnChainSatsPerVbyte
     // console.log(swapInfo)
