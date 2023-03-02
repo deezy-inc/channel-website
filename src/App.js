@@ -29,9 +29,8 @@ const MIN_CHANNEL_SIZE_SATS = TESTNET ? 50000 : 400000
 const DEFAULT_LIQUIDITY_FEE_PPM = 1500
 const DEFAULT_VBYTES_PER_SWAP = 300
 const SATS_PER_BTC = 100000000
-const DEFAULT_CHAIN_SWAP_SATS = 25000000
-const DEFAULT_CHANNEL_SIZE_SATS = 25000000
-const DEFAULT_ON_CHAIN_FEE_RATE_SATS_PER_VBYTE = 1
+const DEFAULT_CHANNEL_SIZE_SATS = 16700000
+const DEFAULT_ON_CHAIN_FEE_RATE_SATS_PER_VBYTE = 3
 const DEFAULT_USE_SATS = false
 const INVOICE_EXPIRY_MS = 1000 * 60 * 60 * 3 // 3 hr
 const NODE_ID = "024bfaf0cabe7f874fd33ebf7c6f4e5385971fc504ef3f492432e9e3ec77e1b5cf"
@@ -56,7 +55,7 @@ const App = () => {
   const [swapInfo, setSwapInfo] = useState({
     liquidity_fee_ppm: DEFAULT_LIQUIDITY_FEE_PPM,
     on_chain_bytes_estimate: DEFAULT_VBYTES_PER_SWAP,
-    max_swap_amount_sats: DEFAULT_CHAIN_SWAP_SATS * 10,
+    max_swap_amount_sats: DEFAULT_CHANNEL_SIZE_SATS * 10,
     min_swap_amount_sats: 100000,
     available: true
   })
@@ -72,10 +71,11 @@ const App = () => {
     channelRemoteAmountSats: defaultChannelSizeSats,
     feeOnChainSatsPerVbyte: DEFAULT_ON_CHAIN_FEE_RATE_SATS_PER_VBYTE,
     totalFeeSats: defaultTotalFeeSats,
-    feeNetPpm: Math.round(defaultTotalFeeSats * 1000000 / DEFAULT_CHAIN_SWAP_SATS),
+    feeNetPpm: Math.round(defaultTotalFeeSats * 1000000 / DEFAULT_CHANNEL_SIZE_SATS),
     channelRemoteAmountDisplay: DEFAULT_USE_SATS ? defaultChannelSizeSats : defaultChannelSizeSats * 1.0 / SATS_PER_BTC,
     useSatsForDisplay: DEFAULT_USE_SATS
   })
+  const [showConfirmLargeChannelModal, setShowConfirmLargeChannelModal] = useState(false)
 
   useEffect(() => {
     async function fetchSwapInfo() {
@@ -168,7 +168,11 @@ const App = () => {
 
   async function initiatePurchase() {
     setIsNodeInfoValid(true)
-    setShowProvideNodeInfoModal(true)
+    if (channelParams.channelRemoteAmountSats > 16777215) {
+      setShowConfirmLargeChannelModal(true)
+    } else {
+      setShowProvideNodeInfoModal(true)
+    }
   }
 
   function handleFeeRateChange(evt) {
@@ -360,7 +364,7 @@ const App = () => {
                     </Form.Control.Feedback>
                   </InputGroup>
                   <Form.Label className="swap-option"><div className="small-text" id="fee-info">{channelParams.feeOnChainSatsPerVbyte} sat/vbyte on-chain fee rate</div></Form.Label>
-                  <Form.Range className="swap-option" min="1" defaultValue={DEFAULT_ON_CHAIN_FEE_RATE_SATS_PER_VBYTE} onChange={handleFeeRateChange} />
+                  <Form.Range className="swap-option" min="3" defaultValue={DEFAULT_ON_CHAIN_FEE_RATE_SATS_PER_VBYTE} onChange={handleFeeRateChange} />
                   <Form.Label className="swap-option"><div className="small-text" id="fee-info">{channelParams.totalFeeSats.toLocaleString()} total sat fee ({Math.round(channelParams.feeNetPpm).toLocaleString()} ppm)</div></Form.Label>
                   <br />
 
@@ -427,6 +431,27 @@ const App = () => {
               </Button>
               <Button variant="primary" onClick={handleConfirmNodeInfo} disabled={!true}>
                 next
+              </Button>
+            </Modal.Footer>
+          </Modal>
+          <Modal show={showConfirmLargeChannelModal} onHide={() => setShowConfirmLargeChannelModal(false)} className="py-5">
+            <Modal.Header closeButton className="p-4">
+              <Modal.Title>Warning: Large Channel</Modal.Title>
+            </Modal.Header>
+            <Modal.Body className="px-5 py-3">
+              <p>You are requesting a large channel. Your node cannot accept it unless you have configured it specifically to accept large channels</p>
+              <p>Please confirm you have configured your node to accept large channels</p>
+            </Modal.Body>
+            <Modal.Footer>
+              <Button variant="secondary" onClick={() => setShowConfirmLargeChannelModal(false)}>
+                Cancel
+              </Button>
+              <Button variant="primary" onClick={() => {
+                setShowConfirmLargeChannelModal(false);
+                setShowProvideNodeInfoModal(true);
+              }
+              }>
+                Yes I Accept Large Channels
               </Button>
             </Modal.Footer>
           </Modal>
