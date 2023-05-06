@@ -35,7 +35,6 @@ const DEFAULT_USE_SATS = false
 const INVOICE_EXPIRY_MS = 1000 * 60 * 60 * 3 // 3 hr
 const NODE_ID = "024bfaf0cabe7f874fd33ebf7c6f4e5385971fc504ef3f492432e9e3ec77e1b5cf"
 const CLEARNET_NODE_URI = `${NODE_ID}@52.1.72.207:9735`
-const TOR_NODE_URI = `${NODE_ID}@ecu3omnk6kxer5hw35owlzhw3xuqfroxjnnflbkjkc7xy2jy3gy7b2yd.onion:9735`
 
 const App = () => {
   const [copiedVisible, setCopiedVisible] = useState(false)
@@ -196,10 +195,7 @@ const App = () => {
   }
 
   function getNodeUri() {
-    return nodeLinkType === "#clearnet" ?
-      CLEARNET_NODE_URI
-      :
-      TOR_NODE_URI
+    return CLEARNET_NODE_URI
   }
 
   function updateChannelParams({ newChannelRemoteAmountSats, newFeeOnChainSatsPerByte, newTotalFeeSats, newUseSatsForDisplay }) {
@@ -388,9 +384,6 @@ const App = () => {
               <Nav variant="pills" defaultActiveKey={nodeLinkType} onSelect={(s) => setNodeLinkType(s)}>
                 <Nav.Item>
                   <Nav.Link eventKey="#clearnet">Clearnet</Nav.Link>
-                </Nav.Item>
-                <Nav.Item>
-                  <Nav.Link eventKey="#tor">Tor</Nav.Link>
                 </Nav.Item>
               </Nav>
             </Card.Header>
