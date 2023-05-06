@@ -308,7 +308,7 @@ const App = () => {
         <b>On-Chain Fee Rate:</b> {channelParams.feeOnChainSatsPerVbyte} sat/vbyte<br /><br />
         <b>Total Fee:</b> {channelParams.totalFeeSats.toLocaleString('en-US')} sats ({channelParams.feeNetPpm.toLocaleString('en-US')} ppm)<br /><br />
         <b>Node Info:</b> {nodeConnectionInfo}<br /><br />
-        <b>Details:</b> The channel will have zero routing fees and will remain open for at least one month.
+        <b>Details:</b> The channel will remain open for at least one month.
       </>
     )
   }
@@ -347,7 +347,7 @@ const App = () => {
           <Card id="swap-section" className="section" fluid bg="dark" text="white" variant="dark">
             <Card.Header style={{ borderBottom: '1px solid gray', marginBottom: '20px' }} className="card-header py-4">
               <Card.Title>
-                <b>Buy a Zero-Fee Channel</b>
+                <b>Buy a Channel</b>
               </Card.Title>
             </Card.Header>
             {ready ?
