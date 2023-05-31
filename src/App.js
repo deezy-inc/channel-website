@@ -266,7 +266,7 @@ const App = () => {
         {
           node_connection_info: nodeConnectionInfo,
           remote_balance: channelParams.channelRemoteAmountSats,
-          on_chain_fee_rate: channelParams.feeOnChainSatsPerVbyte
+          on_chain_fee_rate: parseInt(channelParams.feeOnChainSatsPerVbyte)
         })
     } catch (err) {
       setShowAwaitingInvoiceModal(false)
