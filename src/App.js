@@ -30,7 +30,7 @@ const DEFAULT_LIQUIDITY_FEE_PPM = 1500
 const DEFAULT_VBYTES_PER_SWAP = 300
 const SATS_PER_BTC = 100000000
 const DEFAULT_CHANNEL_SIZE_SATS = 16700000
-const DEFAULT_ON_CHAIN_FEE_RATE_SATS_PER_VBYTE = 15
+const DEFAULT_ON_CHAIN_FEE_RATE_SATS_PER_VBYTE = 100
 const DEFAULT_USE_SATS = false
 const INVOICE_EXPIRY_MS = 1000 * 60 * 60 * 3 // 3 hr
 const NODE_ID = "024bfaf0cabe7f874fd33ebf7c6f4e5385971fc504ef3f492432e9e3ec77e1b5cf"
@@ -360,7 +360,7 @@ const App = () => {
                     </Form.Control.Feedback>
                   </InputGroup>
                   <Form.Label className="swap-option"><div className="small-text" id="fee-info">{channelParams.feeOnChainSatsPerVbyte} sat/vbyte on-chain fee rate</div></Form.Label>
-                  <Form.Range className="swap-option" min="3" defaultValue={DEFAULT_ON_CHAIN_FEE_RATE_SATS_PER_VBYTE} onChange={handleFeeRateChange} />
+                  <Form.Range className="swap-option" min="30" defaultValue={DEFAULT_ON_CHAIN_FEE_RATE_SATS_PER_VBYTE} onChange={handleFeeRateChange} />
                   <Form.Label className="swap-option"><div className="small-text" id="fee-info">{channelParams.totalFeeSats.toLocaleString()} total sat fee ({Math.round(channelParams.feeNetPpm).toLocaleString()} ppm)</div></Form.Label>
                   <br />
 
